@@ -8,7 +8,6 @@ setup(
     author="Garvin Kruthof",
     author_email="",
     license="MIT",
-    packages=["refinda"],
     long_description="file: README.md",
     long_description_content_type="text/markdown",
     classifiers=[
