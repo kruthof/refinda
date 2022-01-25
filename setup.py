@@ -23,6 +23,7 @@ setup(
         "pandas==1.2.*",
         "wrds==3.1.1",
         "tqdm==4.62.3",
+        "ta==0.9.0",
     ],
     zip_safe=False,
 )
