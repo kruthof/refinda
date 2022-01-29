@@ -4,15 +4,22 @@ from refinda.preprocessors.helper import *
 from tqdm import tqdm
 
 
-def french49():
+def french49(file=None):
     warnings.filterwarnings("ignore")
 
     with tqdm(total=100) as pbar:
-        data = pd.read_csv(
-            "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/49_Industry_Portfolios_daily_CSV.zip",
-            compression="zip",
-            skiprows=[0, 1, 2, 3, 4, 5, 6, 7, 8],
-        )
+
+        if file == None:
+            data = pd.read_csv(
+                "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/49_Industry_Portfolios_daily_CSV.zip",
+                compression="zip",
+                skiprows=[0, 1, 2, 3, 4, 5, 6, 7, 8],
+            )
+        else:
+            data = pd.read_csv(
+                file,
+                skiprows=[0, 1, 2, 3, 4, 5, 6, 7, 8],
+            )
 
         # update progress bar
         pbar.update(50)
