@@ -1,6 +1,6 @@
-from src.refinda.preprocessors.indicators import *
+from refinda.preprocessors.indicators import *
 import warnings
-from src.refinda.preprocessors.helper import *
+from refinda.preprocessors.helper import *
 from tqdm import tqdm
 
 

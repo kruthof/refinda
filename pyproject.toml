@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "refinda"
-version = "1.0.0"
+version = "1.0.2"
 description = "Reproducible Finance Data: Standardized datasets for finance research tasks."
 readme = "README.md"
 authors = [{ name = "Garvin Kruthof"}]
@@ -31,10 +31,10 @@ dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
 Homepage = "https://kruthof.github.io/projects/refinda/"
 
 [project.scripts]
-refinda = "refinda:None"
+refinda = "refinda.__main__:main"
 
 [tool.bumpver]
-current_version = "1.0.0"
+current_version = "1.0.2"
 version_pattern = "YYYY.BUILD[-TAG]"
 commit_message = "1.0 Release"
 commit = true

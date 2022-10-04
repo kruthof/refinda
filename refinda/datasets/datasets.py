@@ -1,4 +1,4 @@
-from src.refinda.datasets.downloader import downloader
+from refinda.datasets.downloader import downloader
 
 """
 Functions that download datasets from the cloud
