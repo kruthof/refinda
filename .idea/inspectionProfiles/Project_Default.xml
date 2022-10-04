@@ -1,0 +1,29 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="16">
+            <item index="0" class="java.lang.String" itemvalue="pre-commit" />
+            <item index="1" class="java.lang.String" itemvalue="elegantrl" />
+            <item index="2" class="java.lang.String" itemvalue="exchange_calendars" />
+            <item index="3" class="java.lang.String" itemvalue="stockstats" />
+            <item index="4" class="java.lang.String" itemvalue="pytest" />
+            <item index="5" class="java.lang.String" itemvalue="stable-baselines3" />
+            <item index="6" class="java.lang.String" itemvalue="lz4" />
+            <item index="7" class="java.lang.String" itemvalue="jqdatasdk" />
+            <item index="8" class="java.lang.String" itemvalue="ray" />
+            <item index="9" class="java.lang.String" itemvalue="gputil" />
+            <item index="10" class="java.lang.String" itemvalue="ccxt" />
+            <item index="11" class="java.lang.String" itemvalue="yfinance" />
+            <item index="12" class="java.lang.String" itemvalue="tensorboardX" />
+            <item index="13" class="java.lang.String" itemvalue="gym" />
+            <item index="14" class="java.lang.String" itemvalue="wrds" />
+            <item index="15" class="java.lang.String" itemvalue="alpaca_trade_api" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
