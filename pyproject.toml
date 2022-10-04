@@ -30,6 +30,8 @@ dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
 [project.urls]
 Homepage = "https://kruthof.github.io/projects/refinda/"
 
+[project.scripts]
+refinda = "refinda:None"
 
 [tool.bumpver]
 current_version = "1.0.0"
