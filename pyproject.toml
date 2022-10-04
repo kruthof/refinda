@@ -1,6 +1,32 @@
 [build-system]
-requires = [
-    "setuptools>=54",
-    "wheel"
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "refinda"
+version = "1.0.0"
+description = "Reproducible Finance Data: Standardized datasets for finance research tasks."
+readme = "README.md"
+authors = [{ name = "Garvin Kruthof"}]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
 ]
-build-backend = "setuptools.build_meta"
+keywords = ["finance", "machine learning", "trading", "portfolio management"]
+dependencies = [
+    "numpy>=1.21.*",
+    "pandas>=1.2.*",
+    "wrds==3.1.1",
+    "tqdm==4.62.3",
+    "ta==0.9.0"
+]
+requires-python = ">=3.7"
+
+[project.optional-dependencies]
+dev = ["black", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://kruthof.github.io/projects/refinda/"
+
