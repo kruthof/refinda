@@ -35,3 +35,4 @@ tqdm==4.62.3
     # via refinda (pyproject.toml)
 wrds==3.1.1
     # via refinda (pyproject.toml)
+scipy
