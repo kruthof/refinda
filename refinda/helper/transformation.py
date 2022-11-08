@@ -39,7 +39,7 @@ def get_ticker_columns_returns(data):
     return get_ticker_columns(data).pct_change()
 
 
-def strategy_preprocessor(data, start, end, window):
+def strategy_preprocessor(data, start, end, window,exlude_rf = True):
 
     """
     Function returns data sliced by start and end date plus time of lenght window before
@@ -50,6 +50,8 @@ def strategy_preprocessor(data, start, end, window):
     @param window: int length of time used for subsequent strategy
     """
 
+    if exlude_rf:
+        data = data.iloc[:, data.columns != "RF"]
     # esure window is int
     window = int(window)
     # check if end date exist in data, previously available day otherwise
@@ -62,7 +64,7 @@ def strategy_preprocessor(data, start, end, window):
     # check if end date exist in data, next available day otherwise
     end_idx = data.loc[data.date == end, :].index.values[0]
 
-    data = data.iloc[start_idx - window : end_idx + 1]
+    data = data.iloc[start_idx+1 - window : end_idx + 2]
     return data
 
 
