@@ -13,7 +13,7 @@ def strategy_1n(data, funds=1000000, transaction_costs=0.001):
     :param funds: int, starting funds, default =100
     :return: Dataframe funds per timestamp and absolute amount of shares per portfolio and timestamp
     """
-    #transform reinfda dataset to column data
+    # transform reinfda dataset to column data
     data = get_ticker_columns(data)
     # get number of portfolios
     n_portfolios = data.shape[1]
@@ -74,29 +74,39 @@ def strategy_1n(data, funds=1000000, transaction_costs=0.001):
     funds_investment["returns"] = funds_investment.funds.pct_change()
     return funds_investment.set_index("date")
 
-def apply_minVar(weights,data,window,funds=1000000, transaction_costs=0.001):
-    '''
+
+def apply_minVar(weights, data, window, funds=1000000, transaction_costs=0.001):
+    """
     Functions calculates returns, turnover and transactino fees
     for min variance portfolio strategy
 
     @param weights dataframe weight df from get_PortfolioWeights function
     @param data dataframe column based price df from strategy_preprocessor function
     @param window int window size used for calculating weights
-    '''
+    """
 
-    data= data.iloc[window:data.shape[0]].set_index('date')
-    cumreturns = (data.pct_change() * weights).apply(
-        np.sum, axis=1). \
-        add(1).cumprod().sub(1)
+    data = data.iloc[window : data.shape[0]].set_index("date")
+    cumreturns = (
+        (data.pct_change() * weights).apply(np.sum, axis=1).add(1).cumprod().sub(1)
+    )
     funds = funds * cumreturns + funds
-    prices = data.iloc[window:data.shape[0]]
+    prices = data.iloc[window : data.shape[0]]
     transaction = weights - weights.shift(1)
     transaction.iloc[0] = weights.iloc[0]
-    turnover = np.abs(transaction).multiply(funds, axis=0).apply(np.sum,axis=1)
+    turnover = np.abs(transaction).multiply(funds, axis=0).apply(np.sum, axis=1)
     transaction_fees = turnover * transaction_costs
-    output = pd.DataFrame({'date':data.index,'funds':funds,'turnover':turnover,'transaction_costs':transaction_fees,'returns':funds.pct_change()})
+    output = pd.DataFrame(
+        {
+            "date": data.index,
+            "funds": funds,
+            "turnover": turnover,
+            "transaction_costs": transaction_fees,
+            "returns": funds.pct_change(),
+        }
+    )
 
     return output
+
 
 def get_PortfolioWeights(data, window, rf_exclude=True):
     """
@@ -154,7 +164,6 @@ def get_PortfolioWeights(data, window, rf_exclude=True):
     )
 
     return [minVar, maxSharp]
-
 
 
 def df_postProcessor(weights, data, date, window):
