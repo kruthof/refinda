@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
      name="refinda",
-     version="1.0.2",
+     version="1.0.3",
      description="A Python package for reproducing financial data",
      url="https://github.com/kruthof/refinda",
      author="Garvin Kruthof",
@@ -25,6 +25,8 @@ setup(
          "wrds==3.1.1",
          "tqdm==4.62.3",
          "ta==0.9.0",
+         "scipy",
+         "pyfolio>=0.9.2",
      ],
      zip_safe=False,
 )
