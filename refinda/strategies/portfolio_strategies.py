@@ -193,7 +193,7 @@ def _minVar_optimizer(data, i, window):
         # Objective function
         fun=lambda weights: np.sqrt(
             np.transpose(weights)
-            @ (data.iloc[i : i + window].cov() * 253 / window)
+            @ (data.iloc[i : i + window].cov() * 253)
             @ weights
         ),
         # Initial guess, which is the equal weight array
@@ -205,12 +205,12 @@ def _minVar_optimizer(data, i, window):
 
 
 def portfolio_returns(weights, data, window, calendarAdjust=253):
-    return (np.sum(data.mean() * weights)) * calendarAdjust / window
+    return (np.sum(data.mean() * weights)) * calendarAdjust
 
 
 def portfolio_sd(weights, data, window, calendarAdjust=253):
     return np.sqrt(
-        np.transpose(weights) @ (data.cov() * calendarAdjust / window) @ weights
+        np.transpose(weights) @ (data.cov() * calendarAdjust) @ weights
     )
 
 
