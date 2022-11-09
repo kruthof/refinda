@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "refinda"
-version = "1.0.2"
+version = "1.0.3"
 description = "Reproducible Finance Data: Standardized datasets for finance research tasks."
 readme = "README.md"
 authors = [{ name = "Garvin Kruthof"}]
