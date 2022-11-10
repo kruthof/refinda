@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 
 def get_covariance(data, window):
     """
@@ -27,3 +27,21 @@ def get_covariance(data, window):
     )
 
     return cov_list.set_index("date")
+
+def _rolling_apply(df, fun, window):
+    '''
+    Function for applying functions to
+    timeseries with rolling window
+    @param df dataframe refinda column bases
+    @param fun function to be applied
+    @param window int rolling window
+
+    @return object
+    '''
+    prepend = [None] * (window)
+    end = len(df) - window
+    mid = map(lambda start: fun(df.iloc[start:start + window]), np.arange(0,end))
+    #last =  fun(df.iloc[end:])
+    #first =  fun(df.iloc[0:window])
+
+    return [*prepend, *mid]
