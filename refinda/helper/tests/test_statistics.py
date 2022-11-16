@@ -23,13 +23,13 @@ def get_non_equal_data():
     y = np.random.randint(0,100,10)
     return [x,y]
 
-def test_z_value_zero():
-    data1,data2 = get_equal_data()
-    z_value = zvalue_sharp(data1,data2)
+def test_z_value_zero(get_equal_data):
+    data1,data2 = get_equal_data
+    z_value = zvalue_sharp(data1,data2,window=3)
     assert z_value == 0.0
 
 
-def test_z_value_non_zero():
-    data1,data2 = get_non_equal_data()
-    z_value = zvalue_sharp(data1,data2)
+def test_z_value_non_zero(get_non_equal_data):
+    data1,data2 = get_non_equal_data
+    z_value = zvalue_sharp(data1,data2,window=3)
     assert z_value == pytest.approx(-0.7903370505139574)
