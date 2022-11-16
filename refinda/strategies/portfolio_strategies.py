@@ -158,9 +158,7 @@ class portfolioStrategies:
         #apply optimizer
         weights = _rolling_apply(data,lambda x: function(x),self.window)
         #convert to dataframe
-        print(len(weights))
         weights = pd.DataFrame(weights[self.window:len(weights)])
-        print(len(weights))
         #rename columns
         weights.columns=data.columns
         #add date variable
@@ -230,10 +228,16 @@ class portfolioStrategies:
         )["x"]
 
     def portfolio_returns(self,weights,data, calendarAdjust=253):
+        '''
+        Helper function to calculate returns
+        '''
         return (np.sum(np.mean(data) * weights)) * calendarAdjust
 
 
     def portfolio_sd(self,weights, data, calendarAdjust=253):
+        '''
+        Helper function zo calculate standard deviation
+        '''
         return np.sqrt(
             np.transpose(weights) @ (data.cov() * calendarAdjust) @ weights
         )
