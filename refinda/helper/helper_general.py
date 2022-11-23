@@ -28,7 +28,7 @@ def get_covariance(data, window):
 
     return cov_list.set_index("date")
 
-def _rolling_apply(df, fun, window):
+def _rolling_apply(df, fun, window,args=[]):
     '''
     Function for applying functions to
     timeseries with rolling window
@@ -40,8 +40,33 @@ def _rolling_apply(df, fun, window):
     '''
     prepend = [None] * (window)
     end = len(df) - window
-    mid = map(lambda start: fun(df.iloc[start:start + window]), np.arange(0,end))
+    mid = map(lambda start: fun(df.iloc[start:start + window],*args), np.arange(0,end))
     #last =  fun(df.iloc[end:])
     #first =  fun(df.iloc[0:window])
 
     return [*prepend, *mid]
+
+def get_rf():
+    '''
+    Function loads rf rates, transforms date column and set it as index
+
+    @return df dataframe rf rates
+    '''
+    df = pd.read_csv('./datasets/rf_rates.csv')
+
+    df['date'] = pd.to_datetime(df.date, format="%Y%m%d")
+    df['date'] = [x.strftime("%Y-%m-%d") for x in df['date']]
+    df.set_index('date',inplace=True)
+    return df/100 #convert to percentage
+
+def rf_adjustment(data):
+    '''
+    Function provides risk free adjusted returns
+    @param data dataframe with index column date and returns with column name returns
+    @returns dataframe df risk adjusted returns with index = date
+    '''
+    rf = get_rf()
+    df = pd.merge(data.returns, rf, right_index=True, left_index=True)
+    return df.iloc[:,0] - df.iloc[:,1]
+
+
