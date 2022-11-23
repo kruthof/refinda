@@ -1,5 +1,24 @@
 import pandas as pd
 import numpy as np
+from scipy.stats import norm
+
+
+def significance_sharp(sharps1, sharps2,window):
+    '''
+    Conducts significance test of two series of sharp values
+    where each entry has been calculated on a look-back period = window
+
+    @param sharps1 series sharp value of series 1
+    @param sharps2 series sharp value of series 2
+    @param window int look-back window of previous sharp calculation
+
+    @return dataframe  z-score and p-value
+    '''
+
+    z_score = zvalue_sharp(sharps1,sharps2,window)
+    p_value = z_p_value(z_score)
+
+    return pd.DataFrame({'z-score':z_score,'p-value one sided':p_value,'p-value two sided':p_value*2})
 
 def zvalue_sharp(returns1, returns2,window):
     '''
@@ -28,3 +47,14 @@ def zvalue_sharp(returns1, returns2,window):
     z_value = (sigma_1*mu_1 - sigma_2*mu_2) / np.sqrt(theta)
 
     return z_value[0,1]
+
+def z_p_value(z):
+    '''
+    Calculates p-value of given z-score
+    @param z float z-value
+
+    @return float p-value
+    '''
+
+    return norm.sf(np.abs(z))
+
