@@ -25,7 +25,13 @@ class portfolioStrategies:
         :return: Dataframe funds per timestamp and absolute amount of shares per portfolio and timestamp
         """
         # transform reinfda dataset to column data
-        data = get_ticker_columns(self.data)
+        try:
+            data = get_ticker_columns(self.data).set_index('date')
+            data = data.iloc[self.window:] # no need for look-back window for 1/n
+        except:
+            data = self.data.set_index('date')
+            data = data.iloc[self.window:] # no need for look-back window for 1/n
+
         # get number of portfolios
         n_portfolios = data.shape[1]
         # calculate funds per portfolio
@@ -44,7 +50,7 @@ class portfolioStrategies:
 
         # provide strategy information
         print(
-            f"1/N strategy with initial funding: {funds} and transaction costs: {transaction_costs*100}%."
+            f"1/N strategy with initial funding: {self.funds } and transaction costs: {self.transaction_costs *100}%."
         )
         # loop through dataframe
         for i in range(data.shape[0]):
@@ -64,14 +70,14 @@ class portfolioStrategies:
 
             else:
                 assets = funds_asset / data.iloc[i]
-                turnover = np.sum(funds)
+                turnover = np.sum(self.funds)
                 assets_new = assets
                 funds = (data.iloc[i] * assets.values).sum()
                 # update funds per portfolio
                 funds_asset = funds / n_portfolios
 
             funds_investment.loc[i, "turnover"] = turnover
-            funds_investment.loc[i, "transaction_costs"] = turnover * transaction_costs
+            funds_investment.loc[i, "transaction_costs"] = turnover * self.transaction_costs
             # calculate fundings for next timestep
             # print(f'assets are {assets_new.values}')
             # wrtie to dataframe
