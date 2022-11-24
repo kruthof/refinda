@@ -53,8 +53,7 @@ def get_rf():
 
     @return df dataframe rf rates
     '''
-    #df = pd.read_csv('./datasets/rf_rates.csv')
-    df = pd.read_csv(importlib.resources.files(refinda).joinpath('datasets/rf_rates.csv'))
+    df = pd.read_csv('./datasets/rf_rates.csv')
     df['date'] = pd.to_datetime(df.date, format="%Y%m%d")
     df['date'] = [x.strftime("%Y-%m-%d") for x in df['date']]
     df.set_index('date',inplace=True)
