@@ -42,7 +42,7 @@ def compare_summary(return_dict=[]):
 
 def sharp_ratio(data,return_freq = 'daily'):
     '''
-    Function returns sharop value of a given time series
+    Function returns annualized sharp value of a given time series
 
     @param data series of (risk adjusted) returns
     @return float sharpvalue
