@@ -1,5 +1,6 @@
 from refinda.datasets.downloader import downloader
-
+import pkg_resources
+import pandas as pd
 """
 Functions that download datasets from the cloud
 """
@@ -38,3 +39,16 @@ def french_10ind_weighted_mkr_rf():
     file = "https://dl.dropboxusercontent.com/s/6mpuerlui6mo264/French_10_mkt_rf_weighted.csv.zip?dl=0"
     data = simple_pre_processor(downloader(file))
     return data
+
+def get_rf():
+    '''
+    Function loads rf rates, transforms date column and set it as index
+
+    @return df dataframe rf rates
+    '''
+    df = pd.read_csv(pkg_resources.resource_stream(__name__, 'rf_rates.csv'))
+    #df = pd.read_csv('./datasets/rf_rates.csv')
+    df['date'] = pd.to_datetime(df.date, format="%Y%m%d")
+    df['date'] = [x.strftime("%Y-%m-%d") for x in df['date']]
+    df.set_index('date',inplace=True)
+    return df/100 #convert to percentage
