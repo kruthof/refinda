@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "refinda"
-version = "1.0.4.5"
+version = "1.0.4.6"
 description = "Reproducible Finance Data: Standardized datasets for finance research tasks."
 readme = "README.md"
 authors = [{ name = "Garvin Kruthof"}]
@@ -36,15 +36,15 @@ Homepage = "https://kruthof.github.io/projects/refinda/"
 refinda = "refinda.__main__:main"
 
 [tool.bumpver]
-current_version = "1.0.4.5"
+current_version = "1.0.4.6"
 version_pattern = "YYYY.BUILD[-TAG]"
 commit_message = "1.0.4 Release"
 commit = true
 tag = true
 push = true
 
-[tool.setuptools.package-data]
-myModule = ["*.csv"]
+[tool.setuptools]
+include-package-data = true
 
 [tool.bumpver.file_patterns]
 "pyproject.toml" = [
