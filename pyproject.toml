@@ -43,6 +43,9 @@ commit = true
 tag = true
 push = true
 
+[tool.setuptools.package-data]
+myModule = ["*.csv"]
+
 [tool.bumpver.file_patterns]
 "pyproject.toml" = [
     'current_version = "{version}"',
