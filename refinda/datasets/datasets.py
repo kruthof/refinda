@@ -46,7 +46,7 @@ def french_10ind_weighted_mkr_rf():
     return data
 
 def get_rf():
-    file = "https://www.dropbox.com/s/nqnsn8au27wy226/rf_rates.zip?dl=0"
+    file = "https://dl.dropboxusercontent.com/s/nqnsn8au27wy226/rf_rates.zip?dl=0"
     df = downloader(file)
     df['date'] = pd.to_datetime(df.date, format="%Y%m%d")
     df['date'] = [x.strftime("%Y-%m-%d") for x in df['date']]
