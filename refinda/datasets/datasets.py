@@ -40,6 +40,20 @@ def french_10ind_weighted_mkr_rf():
     data = simple_pre_processor(downloader(file))
     return data
 
+def french_10ind_weighted_mkr_rf():
+    file = "https://dl.dropboxusercontent.com/s/6mpuerlui6mo264/French_10_mkt_rf_weighted.csv.zip?dl=0"
+    data = simple_pre_processor(downloader(file))
+    return data
+
+def get_rf():
+    file = "https://www.dropbox.com/s/pn4xk46qny75nj9/rf_rates.csv.zip?dl=0"
+    df = downloader(file)
+    df['date'] = pd.to_datetime(df.date, format="%Y%m%d")
+    df['date'] = [x.strftime("%Y-%m-%d") for x in df['date']]
+    df.set_index('date', inplace=True)
+    return df / 100  # convert to percentage
+
+"""
 def get_rf():
     '''
     Function loads rf rates, transforms date column and set it as index
@@ -52,3 +66,4 @@ def get_rf():
     df['date'] = [x.strftime("%Y-%m-%d") for x in df['date']]
     df.set_index('date',inplace=True)
     return df/100 #convert to percentage
+"""
