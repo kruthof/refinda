@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
-import importlib.resources
-
+from refinda.datasets.datasets import get_rf
 def get_covariance(data, window):
     """
     Function generates covariance matrix based on data of shape(window,...)
@@ -47,17 +46,6 @@ def _rolling_apply(df, fun, window,args=[]):
 
     return [*prepend, *mid]
 
-def get_rf():
-    '''
-    Function loads rf rates, transforms date column and set it as index
-
-    @return df dataframe rf rates
-    '''
-    df = pd.read_csv('./datasets/rf_rates.csv')
-    df['date'] = pd.to_datetime(df.date, format="%Y%m%d")
-    df['date'] = [x.strftime("%Y-%m-%d") for x in df['date']]
-    df.set_index('date',inplace=True)
-    return df/100 #convert to percentage
 
 def rf_adjustment(data):
     '''
