@@ -2,7 +2,7 @@ import pandas as pd
 from pyfolio import timeseries
 import numpy as np
 from refinda.helper.helper_general import _rolling_apply
-
+import scipy
 def get_summary(returns_vector, nan="remove"):
     """
     Providing summary statistics for a given return vector
@@ -58,6 +58,78 @@ def sharp_ratio(data,return_freq = 'daily'):
             np.divide(np.mean(data),np.std(data))
             , np.sqrt(adjustment)
             )
+
+def kurtosis(data,return_freq='daily'):
+    '''
+    Function calculates kurtosis for a given series and annualizes
+    the result.
+    https://quant.stackexchange.com/questions/3956/how-to-annualize-skewness-and-kurtosis-based-on-daily-returns
+
+    @param data series of returns
+    @param return_freq str indicating period for returns
+
+    @return annualized kurtosis
+    '''
+
+    _adjustments = {"daily": 252,
+                  "weekly": 52,
+                  "monthly": 12}
+
+    kurtosis = scipy.stats.kurtosis(data, nan_policy='omit')
+    return kurtosis / _adjustments[return_freq]
+
+def skewness(data,return_freq='daily'):
+    '''
+    Function calculates skewness for a given series and annualizes
+    the result.
+    https://quant.stackexchange.com/questions/3956/how-to-annualize-skewness-and-kurtosis-based-on-daily-returns
+
+    @param data series of returns
+    @param return_freq str indicating period for returns
+
+    @return annualized skeqness
+    '''
+
+    _adjustments = {"daily": 252,
+                  "weekly": 52,
+                  "monthly": 12}
+
+    skewness = scipy.stats.skew(data[-np.isnan(data)],nan_policy='omit')
+    return skewness / np.sqrt(_adjustments[return_freq])
+
+
+
+def kurtosis_ratio_rolling(data,window,return_freq):
+    '''
+    Function calculates kurtosis using rolling window
+    @param data array return data
+    @param window int rolling window
+    @param return_freq list skewness adjustments
+
+    @return array rolling kurtosis
+    '''
+    #store data
+    date=data.index
+    #get sharp ratios
+    _kurtosis = _rolling_apply(data, kurtosis, window=window, args=return_freq)
+    #return dataframe with date as index
+    return pd.DataFrame({'date':date,'kurtosis':_kurtosis}).set_index('date').iloc[window:]
+
+def skewness_ratio_rolling(data,window,return_freq):
+    '''
+    Function calculates skewness using rolling window
+    @param data array return data
+    @param window int rolling window
+    @param return_freq list skewness adjustments
+
+    @return array rolling skewness
+    '''
+    #store data
+    date=data.index
+    #get sharp ratios
+    _skewness = _rolling_apply(data, skewness, window=window, args=return_freq)
+    #return dataframe with date as index
+    return pd.DataFrame({'date':date,'skewness':_skewness}).set_index('date').iloc[window:]
 
 def sharp_ratio_rolling(data,window,return_freq):
     '''
