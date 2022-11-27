@@ -146,3 +146,13 @@ def sharp_ratio_rolling(data,window,return_freq):
     sharp_value = _rolling_apply(data, sharp_ratio, window=window, args=return_freq)
     #return dataframe with date as index
     return pd.DataFrame({'date':date,'sharp_ratios':sharp_value}).set_index('date').iloc[window:]
+
+def expected_shortfall(data,cl=0.01):
+    '''
+    Function calculates the  expected shortfall for a given percentile
+    @param data array datapoints
+    @param cl float confidence level for calculating ES
+    '''
+    data=data[-np.isnan(data)]#ignore nan
+    sorted_list = sorted(data.values)
+    return np.mean(sorted_list[0:int(len(sorted_list) * cl)])
