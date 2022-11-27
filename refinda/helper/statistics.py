@@ -39,14 +39,14 @@ def zvalue_sharp(returns1, returns2,window):
 
     sigma_sq_1 = np.square(sigma_1)
     sigma_sq_2= np.square(sigma_2)
-    cov = np.cov(returns1.iloc[:,0],returns2.iloc[:,0])
+    cov = np.cov(returns1.iloc[:,0],returns2.iloc[:,0])[0][1]
 
     theta = 1/(len(returns1)-window) * (2*sigma_sq_1*sigma_sq_2 + 2 * sigma_1*sigma_2*cov + 0.5 * np.square(mu_1)*
                                         sigma_sq_1 + 0.5*np.square(mu_2)*sigma_sq_2 - (mu_1*mu_2 / (sigma_1*sigma_2) * np.square(cov)))
 
     z_value = (sigma_1*mu_1 - sigma_2*mu_2) / np.sqrt(theta)
 
-    return z_value[0,1]
+    return z_value
 
 def z_p_value(z):
     '''
