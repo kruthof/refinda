@@ -13,6 +13,10 @@ class portfolioStrategies:
         self.rf_exclude=True
         self.transaction_costs = 0.001
         self.funds = 1000000
+        try:
+            self.data = get_ticker_columns(self.data).set_index('date')
+        except:
+            pass
 
 
     def strategy_1n(self):
@@ -25,13 +29,8 @@ class portfolioStrategies:
         :return: Dataframe funds per timestamp and absolute amount of shares per portfolio and timestamp
         """
         # transform reinfda dataset to column data
-        try:
-            data = get_ticker_columns(self.data).set_index('date')
-            data = data.iloc[self.window:] # no need for look-back window for 1/n
-        except:
-            data = self.data.set_index('date')
-            data = data.iloc[self.window:] # no need for look-back window for 1/n
 
+        data = self.data.iloc[self.window:].set_index('date')  # no need for look-back window for 1/n
         # get number of portfolios
         n_portfolios = data.shape[1]
         # calculate funds per portfolio
