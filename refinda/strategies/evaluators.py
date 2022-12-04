@@ -115,6 +115,38 @@ def kurtosis_ratio_rolling(data,window,return_freq):
     #return dataframe with date as index
     return pd.DataFrame({'date':date,'kurtosis':_kurtosis}).set_index('date').iloc[window:]
 
+def calculate_annualized_mean(data,return_frequency='daily'):
+    '''
+    calculate adjusted mean
+    @param data dataframe return data
+    @param return_frequency str frequency of returns
+
+    @return annualized mean
+    '''
+    _adjustments = {"daily": 252,
+                    "weekly": 52,
+                    "monthly": 12}
+    return np.mean(data) * _adjustments[return_frequency]
+
+def mean_returns_rolling(data,window,return_freq=['daily']):
+    '''
+    Function calculates mean returns using rolling window
+    @param data array return data
+    @param window int rolling window
+    @param return_freq list skewness adjustments
+
+    @return array rolling kurtosis
+    '''
+    _adjustments = {"daily": 252,
+                  "weekly": 52,
+                  "monthly": 12}
+    #store data
+    date=data.index
+    #get sharp ratios
+    _returns = _rolling_apply(data, calculate_annualized_mean, window=window, args=return_freq) #* _adjustments[return_freq]
+    #return dataframe with date as index
+    return pd.DataFrame({'date':date,'returns':_returns}).set_index('date').iloc[window:]
+
 def skewness_ratio_rolling(data,window,return_freq):
     '''
     Function calculates skewness using rolling window
