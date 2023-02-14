@@ -20,8 +20,8 @@ setup(
      ],
      python_requires=">=3.7",
      install_requires=[
-         "numpy>=1.21.*",
-         "pandas>=1.2.*",
+         "numpy>=1.23.3",
+         "pandas>=1.5.0",
          "wrds==3.1.1",
          "tqdm==4.62.3",
          "ta==0.9.0",
