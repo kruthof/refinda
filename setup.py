@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
      name="refinda",
-     version="1.0.4.4",
+     version="1.0.4.17",
      description="A Python package for reproducing financial data",
      url="https://github.com/kruthof/refinda",
      author="Garvin Kruthof",
