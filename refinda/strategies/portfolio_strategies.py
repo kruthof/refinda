@@ -68,7 +68,7 @@ class portfolioStrategies:
                 assets_delta = np.abs(assets_new - assets)
                 # calculate turnover
                 turnover = np.sum(assets_delta * data.iloc[i])
-                funds_investment.loc[i, "assets_delta"] = [assets_delta]
+                #funds_investment.loc[i, "assets_delta"] = [assets_delta]
             else:
                 assets = funds_asset / data.iloc[i]
                 turnover = np.sum(self.funds)
@@ -76,7 +76,7 @@ class portfolioStrategies:
                 funds = (data.iloc[i] * assets.values).sum()
                 # update funds per portfolio
                 funds_asset = funds / n_portfolios
-                funds_investment.loc[i, "assets_delta"] = [0]
+                #funds_investment.loc[i, "assets_delta"] = [0]
             funds_investment.loc[i, "turnover"] = turnover
             funds_investment.loc[i, "transaction_costs"] = (
                 turnover * self.transaction_costs
