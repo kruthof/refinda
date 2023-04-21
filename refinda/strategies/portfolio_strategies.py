@@ -68,7 +68,7 @@ class portfolioStrategies:
                 assets_delta = np.abs(assets_new - assets)
                 # calculate turnover
                 turnover = np.sum(assets_delta * data.iloc[i])
-
+                funds_investment.loc[i, "assets_delta"] = assets_delta
             else:
                 assets = funds_asset / data.iloc[i]
                 turnover = np.sum(self.funds)
@@ -81,7 +81,7 @@ class portfolioStrategies:
             funds_investment.loc[i, "transaction_costs"] = (
                 turnover * self.transaction_costs
             )
-            funds_investment.loc[i, "assets_delta"] = assets_delta
+            
             # calculate fundings for next timestep
             # print(f'assets are {assets_new.values}')
             # wrtie to dataframe
