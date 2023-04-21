@@ -76,7 +76,7 @@ class portfolioStrategies:
                 funds = (data.iloc[i] * assets.values).sum()
                 # update funds per portfolio
                 funds_asset = funds / n_portfolios
-
+                funds_investment.loc[i, "assets_delta"] = [0]
             funds_investment.loc[i, "turnover"] = turnover
             funds_investment.loc[i, "transaction_costs"] = (
                 turnover * self.transaction_costs
