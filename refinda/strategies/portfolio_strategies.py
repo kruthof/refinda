@@ -4,20 +4,20 @@ import scipy.optimize as sco
 from refinda.helper.transformation import get_ticker_columns
 from refinda.helper.helper_general import _rolling_apply
 
+
 class portfolioStrategies:
     def __init__(self, data, window):
         self.data = data
         self.window = window
         self.weights_minVar = None
         self.weights_maxSharp = None
-        self.rf_exclude=True
+        self.rf_exclude = True
         self.transaction_costs = 0.001
         self.funds = 1000000
         try:
-            self.data = get_ticker_columns(self.data).set_index('date')
+            self.data = get_ticker_columns(self.data).set_index("date")
         except:
             pass
-
 
     def strategy_1n(self):
         """
@@ -30,7 +30,9 @@ class portfolioStrategies:
         """
         # transform reinfda dataset to column data
 
-        data = self.data.iloc[self.window:].set_index('date')  # no need for look-back window for 1/n
+        data = self.data.iloc[self.window :].set_index(
+            "date"
+        )  # no need for look-back window for 1/n
         # get number of portfolios
         n_portfolios = data.shape[1]
         # calculate funds per portfolio
@@ -76,7 +78,10 @@ class portfolioStrategies:
                 funds_asset = funds / n_portfolios
 
             funds_investment.loc[i, "turnover"] = turnover
-            funds_investment.loc[i, "transaction_costs"] = turnover * self.transaction_costs
+            funds_investment.loc[i, "transaction_costs"] = (
+                turnover * self.transaction_costs
+            )
+            funds_investment.loc[i, "assets_delta"] = assets_delta
             # calculate fundings for next timestep
             # print(f'assets are {assets_new.values}')
             # wrtie to dataframe
@@ -90,31 +95,29 @@ class portfolioStrategies:
         funds_investment["returns"] = funds_investment.funds.pct_change()
         return funds_investment.set_index("date")
 
-
-
     def strategy_minimum_variance(self):
-        '''
+        """
         Function takes takes min_var weights and applies it to dataset
 
         @return df dataframe featuring returns, turnover, and TC or min_var strategy
-        '''
+        """
 
         if self.weights_minVar is None:
             self.weights_minVar = self.rolling_apply(self._minVariance_optimizer)
         return self.apply_strategy(self.weights_minVar)
 
     def strategy_maximum_sharp(self):
-        '''
+        """
         Function takes takes min_var weights and applies it to dataset
 
         @return df dataframe featuring returns, turnover, and TC or min_var strategy
-        '''
+        """
 
         if self.weights_maxSharp is None:
             self.weights_maxSharp = self.rolling_apply(self._maxSharpValue_optimizer)
         return self.apply_strategy(self.weights_maxSharp)
 
-    def apply_strategy(self,weights):
+    def apply_strategy(self, weights):
         """
         Functions calculates returns, turnover and transactino fees
         for min variance portfolio strategy
@@ -130,7 +133,7 @@ class portfolioStrategies:
         )
         funds = self.funds * cumreturns + self.funds
         prices = data.iloc[self.window : data.shape[0]]
-        transaction = weights- weights.shift(1)
+        transaction = weights - weights.shift(1)
         transaction.iloc[0] = weights.iloc[0]
         turnover = np.abs(transaction).multiply(funds, axis=0).apply(np.sum, axis=1)
         transaction_fees = turnover * self.transaction_costs
@@ -146,31 +149,33 @@ class portfolioStrategies:
 
         return output
 
-    def rolling_apply(self,function):
-        '''
+    def rolling_apply(self, function):
+        """
         Function that applies optimizer for each rolling window
         @param object function to be applied
 
         @return weights dataframe weights for each timestep and asset
-        '''
+        """
 
         if self.rf_exclude:
-            data = self.data.iloc[:, (self.data.columns != "RF") & (self.data.columns != "date")]
+            data = self.data.iloc[
+                :, (self.data.columns != "RF") & (self.data.columns != "date")
+            ]
         else:
             data = self.data.iloc[:, self.data.columns != "date"]
         # calculate percentage change
         data = data.pct_change().fillna(0)
-        #apply optimizer
-        weights = _rolling_apply(data,lambda x: function(x),self.window)
-        #convert to dataframe
-        weights = pd.DataFrame(weights[self.window:len(weights)])
-        #rename columns
-        weights.columns=data.columns
-        #add date variable
-        weights['date'] = self.data.iloc[self.window:self.window+weights.shape[0]]["date"].values
-        return weights.set_index('date')#return date indexed weights
-
-
+        # apply optimizer
+        weights = _rolling_apply(data, lambda x: function(x), self.window)
+        # convert to dataframe
+        weights = pd.DataFrame(weights[self.window : len(weights)])
+        # rename columns
+        weights.columns = data.columns
+        # add date variable
+        weights["date"] = self.data.iloc[self.window : self.window + weights.shape[0]][
+            "date"
+        ].values
+        return weights.set_index("date")  # return date indexed weights
 
     def df_postProcessor(self, weights, data, date):
         """
@@ -179,11 +184,12 @@ class portfolioStrategies:
         """
         output = weights.iloc[0 : len(date)]
         output.columns = data.columns  # rename columns
-        output["date"] = np.array(date[0 + self.window : len(date)])  # include date again
+        output["date"] = np.array(
+            date[0 + self.window : len(date)]
+        )  # include date again
         return output.set_index("date")  # set date as index
 
     def _minVariance_optimizer(self, data):
-
         """
         Optimizer for Min Variance Portfolio
         """
@@ -197,9 +203,7 @@ class portfolioStrategies:
         return sco.minimize(
             # Objective function
             fun=lambda weights: np.sqrt(
-                np.transpose(weights)
-                @ (data.cov() * 253)
-                @ weights
+                np.transpose(weights) @ (data.cov() * 253) @ weights
             ),
             # Initial guess, which is the equal weight array
             x0=equal_weights,
@@ -232,17 +236,14 @@ class portfolioStrategies:
             constraints=constraints,
         )["x"]
 
-    def portfolio_returns(self,weights,data, calendarAdjust=253):
-        '''
+    def portfolio_returns(self, weights, data, calendarAdjust=253):
+        """
         Helper function to calculate returns
-        '''
+        """
         return (np.sum(np.mean(data) * weights)) * calendarAdjust
 
-
-    def portfolio_sd(self,weights, data, calendarAdjust=253):
-        '''
+    def portfolio_sd(self, weights, data, calendarAdjust=253):
+        """
         Helper function zo calculate standard deviation
-        '''
-        return np.sqrt(
-            np.transpose(weights) @ (data.cov() * calendarAdjust) @ weights
-        )
+        """
+        return np.sqrt(np.transpose(weights) @ (data.cov() * calendarAdjust) @ weights)
